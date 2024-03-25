@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -10,12 +11,16 @@ export default function Header() {
 
       {/* Buttons */}
       <div className="flex flex-row justify-center items-center">
-        <div className="mr-5 cursor-pointer bg-transparent px-10 py-2.5 border-solid rounded-md border-[1.4px] border-transparent hover:font-semibold hover:text-secondary transition-all duration-400 ">
-          Register
-        </div>
-        <div className=" cursor-pointer bg-transparent px-10 py-2.5 border-solid rounded-md border-[1.5px] border-white  hover:border-primary gradient-btn transition-colors duration-400 ">
-          Login
-        </div>
+        <Link to={"/register"}>
+          <div className="mr-5 cursor-pointer bg-transparent px-10 py-2.5 border-solid rounded-md border-[1.4px] border-transparent hover:font-semibold hover:text-secondary transition-all duration-400 ">
+            Register
+          </div>
+        </Link>
+        <Link to={"/login"}>
+          <div className=" cursor-pointer bg-transparent px-10 py-2.5 border-solid rounded-md border-[1.5px] border-white  hover:border-primary gradient-btn transition-colors duration-400 ">
+            Login
+          </div>
+        </Link>
       </div>
     </header>
   );
