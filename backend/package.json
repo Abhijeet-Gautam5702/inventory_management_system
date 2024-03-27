@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Backend files for Inventory Management System",
   "main": "index.js",
+  "type":"module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev":"nodemon --env-file=.env index.js"
   },
   "keywords": [
     "node",
@@ -16,6 +17,9 @@
   "author": "Abhijeet Gautam",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0",
+    "mongoose": "^8.2.3",
+    "nodemon": "^3.1.0"
   }
 }
