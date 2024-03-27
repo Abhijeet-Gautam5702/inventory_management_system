@@ -5,7 +5,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Error, Register, Login, Dashboard } from "./routes";
 
-// Root router
+// Routes
 const router = createBrowserRouter([
   {
     path: "/",
