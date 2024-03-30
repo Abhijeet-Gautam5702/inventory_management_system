@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Backend files for Inventory Management System",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
-    "dev":"nodemon --env-file=.env index.js"
+    "dev": "nodemon --env-file=.env index.js"
   },
   "keywords": [
     "node",
@@ -17,6 +17,7 @@
   "author": "Abhijeet Gautam",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.3",

@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 :root {
   --gradient-bg: linear-gradient(to right, #5e17eb, #00b8ff);
+  --primary-color: "#004aad";
 }
 
 * {
@@ -15,7 +14,7 @@
 }
 
 .gradient-btn:hover {
-  background: var(--gradient-bg); 
+  background: var(--gradient-bg);
   transition-duration: 400ms;
   opacity: 1;
 }

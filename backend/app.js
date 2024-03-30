@@ -1,6 +1,7 @@
 import express from "express";
+import cors from "cors";
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +16,14 @@ app.use(express.json()); // Body parser
     NOTE: `path` module is used so that the path to the public directory is correctly inferred, irrespective of the OS 
 */
 app.use(express.static(path.join(__dirname, "public")));
+
+// CORS Middleware
+app.use(
+  cors({
+    optionsSuccessStatus: 200,
+    origin: process.env.CORS_ORIGIN,
+  })
+);
 
 /*------------------------------------------------------------------------------*/
 
