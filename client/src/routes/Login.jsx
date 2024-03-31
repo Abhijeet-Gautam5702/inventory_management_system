@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FallingLines } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
+import customErrorToastMessage from "../utilities/customErrorToastMessage.js";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,19 +23,16 @@ export default function Login() {
     try {
       // Send the data to the backend-API to validate the user credentials
       const response = await axios.post(
-        "http://localhost:3000/api/v1/user/health-check",
+        "http://localhost:3000/api/v1/user/login",
         {
           email: data.email,
           password: data.password,
         }
       );
-      // console.log(response);
-      if (response.status == 400) {
-        throw err;
-      }
+      console.log(response);
 
-      // Login-Success Toast
-      toast.success("Login Successful", {
+      // Registration-Success Toast
+      toast.success("User Login Successful", {
         position: "top-center",
         duration: 3000,
       });
@@ -44,14 +42,22 @@ export default function Login() {
         navigate("/dashboard", { replace: true });
       }, 1000);
     } catch (error) {
-      // Send a Toast saying "Login Failed"
-      toast.error("Login Failed", {
+      const errorCode = error.response.data.statusCode;
+      const toastMessage = customErrorToastMessage(
+        {
+          400:"Incorrect password",
+          404:"User credentials not found. Please create an account",
+          422: "One or more required fields are empty",
+          500: "Internal Server Error",
+        },
+        errorCode
+      );
+
+      // Send a Toast
+      toast.error(toastMessage, {
         position: "top-center",
         duration: 3000,
       });
-      // Redirect back to the Login-page
-
-      // console.error(error.message);
     } finally {
       setIsLoading(false);
     }
