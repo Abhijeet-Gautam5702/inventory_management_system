@@ -37,9 +37,9 @@ export default function Login() {
         duration: 3000,
       });
 
-      // Once user is logged-in, redirect to the Dashboard-Page
+      // Once user is logged-in, redirect to the Panel-Page
       setTimeout(() => {
-        navigate("/dashboard", { replace: true });
+        navigate("/panel/dashboard", { replace: true });
       }, 1000);
     } catch (error) {
       const errorCode = error.response.data.statusCode;

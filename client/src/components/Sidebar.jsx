@@ -1,11 +1,21 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const sidebarOptions = ["Dashboard", "Add Product", "Account"];
+const sidebarOptions = [
+  { option: "Dashboard", urlSegment: "dashboard" },
+  {
+    option: "Add Product",
+    urlSegment: "add-product",
+  },
+  {
+    option: "Account",
+    urlSegment: "account",
+  },
+];
 
-export default function Sidebar() {
+export default function Sidebar({ activeIndex, handleActiveIndexChange }) {
   return (
-    <div className="w-[15vw] py-4 bg-light h-full flex flex-col justify-start items-center">
+    <div className="w-1/5 py-4 bg-light h-full flex flex-col justify-start items-center">
       {/* Logo */}
       <div className="pb-4 flex flex-col justify-start items-center font-head text-primary">
         <p className="text-4xl font-bold">verbatim</p>
@@ -13,12 +23,22 @@ export default function Sidebar() {
       </div>
 
       {/* Sidebar Menu Options*/}
-      <div className="w-full flex flex-col justify-start items-center mt-6 px-2">
-        {sidebarOptions.map((option) => {
+      <div className="w-full flex flex-col justify-start mt-6 px-2">
+        {sidebarOptions.map((option, index) => {
           return (
-            <div className="w-full px-5 py-3 rounded-md text-center text-black font-primary text-sm mb-3 bg-white hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer">
-              {option}
-            </div>
+            <Link to={`/panel/${option.urlSegment}`}>
+              <div
+                key={Math.random()}
+                className={`w-full px-5 py-3 rounded-md text-center font-primary text-sm mb-3  transition-all duration-300 cursor-pointer ${
+                  activeIndex == index
+                    ? "bg-primary text-white"
+                    : "text-black bg-white "
+                }`}
+                onClick={() => handleActiveIndexChange(index)}
+              >
+                {option.option}
+              </div>
+            </Link>
           );
         })}
       </div>
