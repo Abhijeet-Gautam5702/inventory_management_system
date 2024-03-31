@@ -1,10 +1,11 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FallingLines } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 import customErrorToastMessage from "../utilities/customErrorToastMessage.js";
+import useStore from "../store/store.js";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,8 +46,8 @@ export default function Login() {
       const errorCode = error.response.data.statusCode;
       const toastMessage = customErrorToastMessage(
         {
-          400:"Incorrect password",
-          404:"User credentials not found. Please create an account",
+          400: "Incorrect password",
+          404: "User credentials not found. Please create an account",
           422: "One or more required fields are empty",
           500: "Internal Server Error",
         },
