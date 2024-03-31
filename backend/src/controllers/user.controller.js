@@ -1,9 +1,13 @@
-import express from "express";
 import asyncHandler from "../utils/asyncHandler.utils.js";
 import User from "../models/user.model.js";
 import CustomApiResponse from "../utils/customApiResponse.utils.js";
 import CustomApiError from "../utils/customApiError.utils.js";
 import { INITIAL_ERROR_MESSAGES } from "../../constants.js";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,
+};
 
 // Healthcheck controller
 const healthCheck = asyncHandler(async (req, res) => {
@@ -14,7 +18,7 @@ const healthCheck = asyncHandler(async (req, res) => {
 // Register User
 const registerUser = asyncHandler(async (req, res) => {
   // Get data from the client using body
-  const {fullname, email, password } = req.body;
+  const { fullname, email, password } = req.body;
 
   // Validate whether any of the datafields is empty or invalid
   if (
@@ -66,4 +70,59 @@ const registerUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { healthCheck, registerUser };
+// Login User
+const loginUser = asyncHandler(async (req, res) => {
+  // Get data from the client using req.body
+  const { email, password } = req.body;
+  // Check if all the required data is provided
+  if (
+    [email, password].some((field) => !field || (field && field.trim() == ""))
+  ) {
+    throw new CustomApiError(
+      422,
+      `${INITIAL_ERROR_MESSAGES.USERS.LOGIN_USER} | Some required fields are not provided`
+    );
+  }
+
+  // Check if the user exists in the database
+  const user = await User.findOne({
+    email: email.trim(),
+  });
+  if (!user) {
+    throw new CustomApiError(
+      404,
+      `${INITIAL_ERROR_MESSAGES.USERS.LOGIN_USER} | User not found in the database`
+    );
+  }
+
+  // Validate the password
+  const isPasswordCorrect = await user.validatePassword(password.trim());
+  if (!isPasswordCorrect) {
+    throw new CustomApiError(
+      400,
+      `${INITIAL_ERROR_MESSAGES.USERS.LOGIN_USER} | Incorrect password`
+    );
+  }
+
+  // Create a refresh token and an access token for the user
+  const accessToken = user.accessTokenGenerator();
+  const refreshToken = user.refreshTokenGenerator();
+
+  // Store the refresh token in the database
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  // Get the instance of the created user
+  const createdUser = await User.findOne({ email: email.trim() }).select(
+    "-refreshToken -password"
+  );
+
+  // Send success response to the client & cookies to the browser
+  res
+    .status(200)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
+    .json(new CustomApiResponse(200, "User login successful", createdUser));
+});
+
+export { healthCheck, registerUser, loginUser };

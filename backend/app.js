@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -24,6 +25,9 @@ app.use(
     origin: process.env.CORS_ORIGIN,
   })
 );
+
+// Cookie-parser Middleware (Gives access to req.cookies object)
+app.use(cookieParser())
 
 /*------------------------------------------------------------------------------*/
 
