@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import CustomApiError from "../utils/customApiError.utils.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -62,10 +63,11 @@ userSchema.pre("save", async function () {
   Business logic for generating access/refresh tokens & possword validation are incorporated in form of mongoose custom method. This is because these methods are exclusive to the "User" documents only (tokens need to be generated for users only; similar for password validation).
 */
 // Mongoose custom method: Access Token generation
-userSchema.methods.accessTokenGenerator = () => {
+userSchema.methods.accessTokenGenerator = function () {
   try {
     const accessToken = jwt.sign(
       {
+        _id: this._id,
         email: this.email,
         fullname: this.fullname,
       },
@@ -77,17 +79,17 @@ userSchema.methods.accessTokenGenerator = () => {
     return accessToken;
   } catch (error) {
     console.error(`Access Token generation failed | ${error}`);
-    throw error; // throw error so that it is catched by the asyncHandler error-block
+    throw new CustomApiError(500, `Access Token generation failed | ${error}`); // throw error so that it is catched by the asyncHandler error-block
   }
 };
 
 // Mongoose custom method: Refresh Token generation
-userSchema.methods.refreshTokenGenerator = () => {
+userSchema.methods.refreshTokenGenerator = function () {
   try {
     const refreshToken = jwt.sign(
       {
+        _id: this._id,
         email: this.email,
-        fullname: this.fullname,
       },
       process.env.REFRESH_TOKEN_KEY,
       {
@@ -97,18 +99,20 @@ userSchema.methods.refreshTokenGenerator = () => {
     return refreshToken;
   } catch (error) {
     console.error(`Refresh Token generation failed | ${error}`);
-    throw error; // throw error so that it is catched by the asyncHandler error-block
+    throw new CustomApiError(500, `Refresh Token generation failed | ${error}`); // throw error so that it is catched by the asyncHandler error-block
   }
 };
 
 // Mongoose custom method: Password validation
-userSchema.methods.validatePassword = async (password) => {
+userSchema.methods.validatePassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);
   } catch (error) {
     console.error(`Password validation failed | ${error}`);
-    throw error; // throw error so that it is catched by the asyncHandler error-block
+    throw new CustomApiError(500, `Password validation failed | ${error}`); // throw error so that it is catched by the asyncHandler error-block
   }
 };
 
-export default User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+export default User;
