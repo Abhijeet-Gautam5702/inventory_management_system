@@ -125,4 +125,28 @@ const loginUser = asyncHandler(async (req, res) => {
     .json(new CustomApiResponse(200, "User login successful", createdUser));
 });
 
-export { healthCheck, registerUser, loginUser };
+// Logout User
+const logoutUser = asyncHandler(async (req, res) => {
+  // Auth middleware: Verify whether the user is authorized to hit the route (The user must be logged-in)
+
+  // Clear the refreshToken from the user in the database
+  const user = await User.findById(req.user._id);
+  user.refreshToken = "";
+  await user.save();
+  if (user.refreshToken) {
+    throw new CustomApiError(
+      500,
+      `${INITIAL_ERROR_MESSAGES.USERS.LOGOUT_USER} | Some unknown error occured at our end | Refresh Token could not be cleared`
+    );
+  }
+
+  // Remove the cookies from the browser
+  // Send success response to the client
+  res
+    .clearCookie("accessToken", cookieOptions)
+    .clearCookie("refreshToken", cookieOptions)
+    .status(200)
+    .json(CustomApiResponse(200, "User logged out successfully"));
+});
+
+export { healthCheck, registerUser, loginUser, logoutUser };
