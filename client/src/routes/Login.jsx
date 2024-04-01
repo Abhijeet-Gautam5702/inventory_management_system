@@ -28,6 +28,10 @@ export default function Login() {
         {
           email: data.email,
           password: data.password,
+        },
+        {
+          withCredentials: true,
+          // credentials: "include",
         }
       );
       console.log(response);

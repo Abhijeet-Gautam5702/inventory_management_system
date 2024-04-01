@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useStore from "../store/store.js";
+import axios from "axios";
 
 const sidebarOptions = [
   {
@@ -19,8 +20,24 @@ const sidebarOptions = [
 
 export default function Sidebar() {
   const activeIndex = useStore((state) => state.activeIndex);
-  // console.log(activeIndex)
   const changeActiveIndex = useStore((state) => state.changeActiveIndex);
+
+  async function logoutUser() {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/user/logout",
+        {},
+        {
+          withCredentials: true,
+          // credentials: "include",
+        }
+      );
+
+      console.log(response);
+    } catch (error) {
+      console.error(`User logout failed | ${error}`);
+    }
+  }
 
   return (
     <div className="w-1/5 py-4 bg-light h-full flex flex-col justify-start items-center">
@@ -52,7 +69,9 @@ export default function Sidebar() {
 
       {/* Logout Prompt */}
       <p className="mt-auto text-sm text-primary cursor-pointer hover:font-semibold hover:text-lg transition-all duration-400">
-        <Link to={"/"}>Logout</Link>
+        <Link to={"/"} onClick={logoutUser}>
+          Logout
+        </Link>
       </p>
     </div>
   );

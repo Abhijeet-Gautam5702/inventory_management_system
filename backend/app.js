@@ -22,12 +22,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(
   cors({
     optionsSuccessStatus: 200,
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN, // determines the origin
+    credentials: true, // ensures that the API-request sets the cookies in the browser
   })
 );
 
 // Cookie-parser Middleware (Gives access to req.cookies object)
-app.use(cookieParser())
+app.use(cookieParser());
 
 /*------------------------------------------------------------------------------*/
 
