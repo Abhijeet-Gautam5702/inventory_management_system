@@ -6,7 +6,10 @@ import { INITIAL_ERROR_MESSAGES } from "../../constants.js";
 
 const cookieOptions = {
   httpOnly: true,
-  secure: true,
+  secure: false, // Until development
+  // SameSite:"None",
+  // domain:"localhost",
+  // path:"/"
 };
 
 // Healthcheck controller
@@ -120,8 +123,8 @@ const loginUser = asyncHandler(async (req, res) => {
   // Send success response to the client & cookies to the browser
   res
     .status(200)
-    .cookie("accessToken", accessToken, cookieOptions)
-    .cookie("refreshToken", refreshToken, cookieOptions)
+    .cookie("accessToken", accessToken.toString(), cookieOptions)
+    .cookie("refreshToken", refreshToken.toString(), cookieOptions)
     .json(new CustomApiResponse(200, "User login successful", createdUser));
 });
 
@@ -146,7 +149,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("accessToken", cookieOptions)
     .clearCookie("refreshToken", cookieOptions)
     .status(200)
-    .json(CustomApiResponse(200, "User logged out successfully"));
+    .json(new CustomApiResponse(200, "User logged out successfully"));
 });
 
 export { healthCheck, registerUser, loginUser, logoutUser };

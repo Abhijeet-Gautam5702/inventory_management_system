@@ -8,8 +8,8 @@ import CustomApiError from "../utils/customApiError.utils.js";
 const authorizeUser = asyncHandler(async (req, res, next) => {
   // Get the tokens from Authorization header or the browser cookies
   const accessToken =
-    req.headers?.authorization?.replace("Bearer ", "") ||
-    req.cookies?.accessToken;
+    req.cookies["accessToken"] ||
+    req.headers?.authorization?.replace("Bearer ", "");
   if (!accessToken) {
     throw new CustomApiError(
       422,
