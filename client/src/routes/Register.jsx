@@ -22,14 +22,11 @@ export default function Register() {
 
     try {
       // Send the data to the backend-API to register the user
-      await axios.post(
-        "http://localhost:3000/api/v1/user/register",
-        {
-          fullname: data.fullname.trim(),
-          email: data.email.trim(),
-          password: data.password.trim(),
-        }
-      );
+      await axios.post("http://localhost:3000/api/v1/user/register", {
+        fullname: data.fullname.trim(),
+        email: data.email.trim(),
+        password: data.password.trim(),
+      });
 
       // Registration-Success Toast
       toast.success("User Registration Successful", {
