@@ -152,4 +152,12 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new CustomApiResponse(200, "User logged out successfully"));
 });
 
-export { healthCheck, registerUser, loginUser, logoutUser };
+// Check if user is logged in
+const isUserLoggedIn = asyncHandler(async (req, res) => {
+  // Authorization check by the Auth middleware
+
+  // Send success response to the client
+  res.status(200).json(new CustomApiResponse(200, "User is Logged In", {}));
+});
+
+export { healthCheck, registerUser, loginUser, logoutUser, isUserLoggedIn };
