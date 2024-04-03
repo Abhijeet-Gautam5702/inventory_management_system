@@ -33,25 +33,23 @@ const router = createBrowserRouter([
   {
     path: "/panel",
     element: <Panel />,
-    children:[
+    children: [
       {
-        path:"dashboard",
-        element:<Dashboard/>
+        path: "dashboard",
+        element: <Dashboard />,
       },
       {
-        path:"add-product",
-        element:<AddProduct/>
+        path: "add-product",
+        element: <AddProduct />,
       },
       {
-        path:"account",
-        element:<Account/>
+        path: "account",
+        element: <Account />,
       },
-    ]
+    ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
