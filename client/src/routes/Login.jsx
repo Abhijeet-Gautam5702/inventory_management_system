@@ -36,16 +36,16 @@ export default function Login() {
       );
       console.log(response);
 
-      // Registration-Success Toast
-      toast.success("User Login Successful", {
-        position: "top-center",
-        duration: 3000,
-      });
-
       // Once user is logged-in, redirect to the Panel-Page
+      navigate("/panel/dashboard", { replace: true });
+
+      // Registration-Success Toast
       setTimeout(() => {
-        navigate("/panel/dashboard", { replace: true });
-      }, 1000);
+        toast.success("User Login Successful", {
+          position: "top-center",
+          duration: 3000,
+        });
+      }, 500);
     } catch (error) {
       const errorCode = error.response.data.statusCode;
       const toastMessage = customErrorToastMessage(

@@ -29,8 +29,10 @@ export default function ProtectedComponent({ children }) {
         errorCode
       );
 
+      // Navigate to the Login Page
       navigate("/login", { replace: true });
 
+      // Toast message
       setTimeout(() => {
         toast.error(toastMessage, {
           position: "top-center",
@@ -39,9 +41,11 @@ export default function ProtectedComponent({ children }) {
       }, 500);
     }
   }
+
   useEffect(() => {
     isUserAuthenticated();
   }, []);
+
   return (
     <>
       {/* Toaster */}
