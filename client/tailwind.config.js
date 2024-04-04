@@ -12,9 +12,9 @@ export default {
         black: "#000000",
         pGreen: "#008431",
         sGreen: "#1cc259",
-        tGreen: "#adfaca",
+        lGreen: "#adfaca",
         yellow: "#fdac4d",
-        red: "#ff3131",
+        red: "#ff3030",
       },
       fontFamily: {
         head: ["Alice", "sans-serif"],
