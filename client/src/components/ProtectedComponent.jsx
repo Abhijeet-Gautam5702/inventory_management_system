@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import customErrorToastMessage from "../utilities/customErrorToastMessage";
 import toast, { Toaster } from "react-hot-toast";
+import { FallingLines } from "react-loader-spinner";
 
 /*
     Wrapper Component (Higher Order Component)
@@ -12,6 +13,8 @@ import toast, { Toaster } from "react-hot-toast";
     This component simply does a backend call to check if the user is logged-in. If not, it redirects the client to the login page.
 */
 export default function ProtectedComponent({ children }) {
+  const [isLoading, setIsLoading] = useState(true);
+
   const navigate = useNavigate();
 
   async function isUserAuthenticated() {
@@ -20,6 +23,7 @@ export default function ProtectedComponent({ children }) {
         withCredentials: true,
       });
       //   console.log(response.data);
+      setIsLoading(false);
     } catch (error) {
       const errorCode = error.response.data.statusCode;
       const toastMessage = customErrorToastMessage(
@@ -48,9 +52,19 @@ export default function ProtectedComponent({ children }) {
 
   return (
     <>
-      {/* Toaster */}
-      <Toaster />
-      <>{children}</>
+      {isLoading == true ? (
+        <FallingLines
+          width="100"
+          visible={true}
+          ariaLabel="falling-circles-loading"
+          color="#004aad"
+        />
+      ) : (
+        <>
+          <Toaster />
+          <>{children}</>
+        </>
+      )}
     </>
   );
 }
