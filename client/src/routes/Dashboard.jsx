@@ -3,26 +3,45 @@ import useStore from "../store/store";
 import { useNavigate } from "react-router-dom";
 import StatsCard from "../components/StatsCard";
 
+let storeData = [
+  {
+    key: "Total store value ($)",
+    value: 75000,
+  },
+  {
+    key: "Total products",
+    value: 456,
+  },
+  {
+    key: "Total categories",
+    value: 36,
+  },
+];
+let orderData = [
+  {
+    key: "Orders completed",
+    value: "275",
+  },
+  {
+    key: "Total Orders",
+    value: "380",
+  },
+];
+let stockData = [
+  {
+    key: "Products out of stock",
+    value: "75",
+  },
+  {
+    key: "Total products",
+    value: "456",
+  },
+];
+
 export default function Dashboard() {
   const changeActiveIndex = useStore((state) => state.changeActiveIndex);
 
   const navigate = useNavigate();
-
-  let storeData, orderData, stockData;
-  storeData = [
-    {
-      key: "Total Store Value ($)",
-      value: "75000",
-    },
-    {
-      key: "Total Products",
-      value: "456",
-    },
-    {
-      key: "Total Categories",
-      value: "36",
-    },
-  ];
 
   useEffect(() => {
     changeActiveIndex(0);
@@ -52,25 +71,25 @@ export default function Dashboard() {
           colorScheme={{
             primaryColor: "text-primary",
             backgroundColor: "bg-light",
-            accentColor:"bg-primary"
+            accentColor: "bg-primary",
           }}
         />
         <StatsCard
           meterDisabled={false}
-          data={storeData}
+          data={orderData}
           colorScheme={{
             primaryColor: "text-black",
             backgroundColor: "bg-lGreen",
-            accentColor:"bg-pGreen"
+            accentColor: "bg-pGreen",
           }}
         />
         <StatsCard
           meterDisabled={false}
-          data={storeData}
+          data={stockData}
           colorScheme={{
             primaryColor: "text-black",
             backgroundColor: "bg-yellow",
-            accentColor:"bg-red"
+            accentColor: "bg-red",
           }}
         />
       </section>

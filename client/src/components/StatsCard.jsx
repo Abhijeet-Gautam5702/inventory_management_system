@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function StatsCard({ meterDisabled, data, colorScheme }) {
+  const percentage = Math.round((data[0].value * 100) / data[1].value);
   return (
     <div
       className={`w-1/3 p-3 rounded-lg ${colorScheme.backgroundColor} flex gap-1 flex-col justify-start items-start`}
@@ -16,17 +17,21 @@ export default function StatsCard({ meterDisabled, data, colorScheme }) {
         );
       })}
 
-      {
-        !meterDisabled && (
-          <div className="w-full flex gap-1 flex-col justify-start items-end mt-1">
-            <p className="font-bold text-black">62%</p>
-            <div className="w-full h-3 flex flex-row justify-start items-center gap-0">
-              <div className={`${colorScheme.accentColor} w-5/6 h-3 rounded-s-full`}> {""}</div>
-              <div className={`w-1/6 h-3 bg-white rounded-e-full`}> </div>
-            </div>
+      {!meterDisabled && (
+        <div className="w-full flex gap-1 flex-col justify-start items-start mt-1">
+          <p className="font-bold text-black">{`${percentage}%`}</p>
+          <div className="w-full h-3 flex flex-row justify-start items-center gap-0">
+            <div
+              style={{ width: `${percentage}%` }}
+              className={`${colorScheme.accentColor} h-3 rounded-s-full transition-all duration-300`}
+            ></div>
+            <div
+              style={{ width: `${100 - percentage}%` }}
+              className={`h-3 bg-white rounded-e-full transition-all duration-300`}
+            ></div>
           </div>
-        )
-      }
+        </div>
+      )}
     </div>
   );
 }
